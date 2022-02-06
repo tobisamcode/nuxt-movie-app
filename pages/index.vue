@@ -3,6 +3,12 @@
     <!-- Hero -->
     <hero />
 
+    <!-- Search -->
+    <div class="container search">
+      <input @keyup.enter="$fetch" type="text" placeholder="Search" v-model.lazy="searchInput">
+      <button v-show="searchInput !== ''" class="button">Clear Search</button>
+    </div>
+
     <!-- Movies -->
     <div class="container movies">
       <div id="movie-grid" class="movies-grid">
@@ -41,6 +47,8 @@ export default {
   data() {
     return {
       movies: [],
+      searchedMovies: [],
+      searchInput: '',
     }
   },
   async fetch() {
@@ -48,12 +56,18 @@ export default {
   },
   methods: {
     async getMovies() {
-      const data = axios.get(`https://api.themoviedb.org/3/movie/now_playing?api_key=0d7dff136b435e9f4b7c27f0b18ceabf&language=en-US&append_to_response=videos,images`);
+      const data = axios.get(`https://api.themoviedb.org/3/movie/now_playing?api_key=0d7dff136b435e9f4b7c27f0b18ceabf&language=en-US&page=1`);
       const result = await data;
       result.data.results.forEach((movie) => {
         this.movies.push(movie)
       })
-      
+    },
+    async searchedMovies() {
+      const data = axios.get(`https://api.themoviedb.org/3/search/movie/?api_key=0d7dff136b435e9f4b7c27f0b18ceabf&language=en-US&page=1&query=${this.searchInput}`)
+      const result = await data;
+      result.data.results.forEach((movie) => {
+        this.searchedMovies.push(movie)
+      })
     }
   }
 }
@@ -61,6 +75,26 @@ export default {
 
 
 <style lang="scss" scoped>
+
+.search {
+    display: flex;
+    padding: 32px 16px;
+    input {
+      max-width: 350px;
+      width: 100%;
+      padding: 12px 6px;
+      font-size: 14px;
+      border: none;
+      &:focus {
+        outline: none;
+      }
+    }
+    .button {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+  }
+
 .movies {
     padding: 32px 16px;
 
