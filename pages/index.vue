@@ -9,8 +9,11 @@
       <button @click="clearSearch" v-show="searchInput !== ''" class="button">Clear Search</button>
     </div>
 
+    <!-- Loading -->
+    <Loading v-if="$fetchState.pending" />
+
     <!-- Movies -->
-    <div class="container movies">
+    <div v-else class="container movies">
       <!-- Searched Movies-->
       <div v-if="searchInput !== ''" id="movie-grid" class="movies-grid">
         <div class="movie" v-for="(movie, index) in searchedMovies" :key="index">
@@ -77,14 +80,15 @@ export default {
       searchInput: '',
     }
   },
+
   async fetch() {
     if (this.searchInput === '') {
       await this.getMovies()
       return
     }
     await this.searchMovies() 
-
   },
+  fetchDelay: 1000,
   methods: {
     async getMovies() {
       const data = axios.get(`https://api.themoviedb.org/3/movie/now_playing?api_key=0d7dff136b435e9f4b7c27f0b18ceabf&language=en-US&page=1`);
@@ -112,6 +116,11 @@ export default {
 
 
 <style lang="scss" scoped>
+
+.loading {
+  padding-top: 120px;
+  align-items: flex-start;
+}
 
 .search {
     display: flex;
