@@ -81,9 +81,6 @@ export default {
           hid: 'discription',
           name: 'description',
           content: 'Get all the latest streaming movies in theaters & online',
-        },
-        {
-          hid: "Content-Security-Policy", content:"upgrade-insecure-requests"
         }
       ]
     }
