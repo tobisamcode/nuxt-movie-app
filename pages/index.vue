@@ -73,6 +73,18 @@ import Hero from '~/components/Hero.vue'
 export default {
   components: { Hero },
   name: 'IndexPage',
+  head() {
+    return {
+      title: 'Movie App - Latest Streaming Movie Info',
+      meta: [
+        {
+          hid: 'discription',
+          name: 'description',
+          content: 'Get all the latest streaming movies in theaters & online',
+        }
+      ]
+    }
+  },
   data() {
     return {
       movies: [],
